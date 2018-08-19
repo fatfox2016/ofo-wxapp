@@ -1,9 +1,10 @@
 {
   "pages":[
-    "projects/billing/index",
-    "projects/index/index",
-    "projects/scanReasult/index"
     
+    "projects/index/index",
+    "projects/scanReasult/index",
+    "projects/warn/index",
+    "projects/billing/index"
   ],
   "window":{
     "navigationBarBackgroundColor": "#b9dd08",

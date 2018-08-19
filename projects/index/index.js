@@ -15,31 +15,42 @@ Page({
         this.movetoCenter();
         break;
       case 2:
-        wx.scanCode({
-          success:()=>{
-            wx.showLoading({
-              title:'正在获取'
-            })
-            wx.request({
-              url:'https://www.easy-mock.com/mock/5b750f2765ae78220feeee33/password',
-              success:(res)=>{
-                console.log(res);
-                wx.hideLoading();
-                wx.redirectTo({
-                  url:'../scanReasult/index?password='+res.data.data.password+'&number='+res.data.data.number,
-                  success:()=>{
-                    wx.showToast({
-                      title:'获取密码成功',
-                      duration:1000
-                    })
-                  }
-                })
-              }
-            })
-          },
-          fail:()=>{
+        if(this.timer){
+          wx.navigateBack({
+            delta:1
+          })
+        }else{
+          wx.scanCode({
+            success: () => {
+              wx.showLoading({
+                title: '正在获取'
+              })
+              wx.request({
+                url: 'https://www.easy-mock.com/mock/5b750f2765ae78220feeee33/password',
+                success: (res) => {
+                  console.log(res);
+                  wx.hideLoading();
+                  wx.redirectTo({
+                    url: '../scanReasult/index?password=' + res.data.data.password + '&number=' + res.data.data.number,
+                    success: () => {
+                      wx.showToast({
+                        title: '获取密码成功',
+                        duration: 1000
+                      })
+                    }
+                  })
+                }
+              })
+            },
+            fail: () => {
 
-          }
+            }
+          })
+        }
+        break;
+      case 3:
+        wx.navigateTo({
+          url:"../warn/index"
         })
     }
   },
@@ -47,7 +58,10 @@ Page({
    * 生命周期函数--监听页面加载
    */
   onLoad: function (options) {
+    this.timer = options.timer;
+    // 页面初始化 options为页面跳转所带来的参数
     wx.getLocation({
+      type:'wgs84', //默认为wgs84 返回gps坐标，gcj 返回可用于wx.openlocation的坐标
       success:(res) => {
         // console.log(res);
         this.setData({
